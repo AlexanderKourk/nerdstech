@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>NerdTech</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' style='stop-color:%233b82f6'/%3E%3Cstop offset='100%25' style='stop-color:%232563eb'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='14' fill='%231e293b'/%3E%3Ccircle cx='32' cy='32' r='14' fill='none' stroke='url(%23g)' stroke-width='4'/%3E%3Ccircle cx='32' cy='32' r='5' fill='url(%23g)'/%3E%3Cline x1='32' y1='18' x2='32' y2='8' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='32' y1='46' x2='32' y2='56' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='18' y1='32' x2='8' y2='32' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3Cline x1='46' y1='32' x2='56' y2='32' stroke='url(%23g)' stroke-width='3' stroke-linecap='round'/%3E%3Crect x='13' y='13' width='6' height='6' rx='1.5' fill='url(%23g)'/%3E%3Crect x='45' y='13' width='6' height='6' rx='1.5' fill='url(%23g)'/%3E%3Crect x='13' y='45' width='6' height='6' rx='1.5' fill='url(%23g)'/%3E%3Crect x='45' y='45' width='6' height='6' rx='1.5' fill='url(%23g)'/%3E%3C/svg%3E">
+    <style>
+      :root {
+        --bg: #07111f;
+        --bg-soft: #0d1a2d;
+        --panel: rgba(15, 23, 42, 0.7);
+        --panel-strong: rgba(15, 23, 42, 0.95);
+        --card: rgba(17, 24, 39, 0.78);
+        --muted: #a7b7cf;
+        --text: #eef4ff;
+        --primary: #7c3aed;
+        --secondary: #22d3ee;
+        --accent: #f59e0b;
+        --line: rgba(148, 163, 184, 0.18);
+        --success: #34d399;
+        --shadow: 0 20px 80px rgba(9, 14, 28, 0.45);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; scroll-padding-top: 96px; }
+      body {
+        margin: 0;
+        font-family: Inter, "Segoe UI", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(124, 58, 237, 0.32), transparent 24%),
+          radial-gradient(circle at top right, rgba(34, 211, 238, 0.2), transparent 28%),
+          linear-gradient(180deg, #050b14 0%, #07111f 100%);
+        color: var(--text);
+      }
+      a { color: inherit; text-decoration: none; }
+      img { max-width: 100%; display: block; }
+      .container { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+      .topbar { position: sticky; top: 0; z-index: 30; backdrop-filter: blur(18px); background: rgba(8, 13, 23, 0.55); border-bottom: 1px solid rgba(148, 163, 184, 0.12); }
+      .nav { display: flex; align-items: center; justify-content: space-between; height: 82px; }
+      .brand { display: inline-flex; align-items: center; gap: 12px; font-weight: 700; letter-spacing: 0.03em; }
+      .brand-mark { width: 34px; height: 34px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--secondary)); position: relative; box-shadow: 0 10px 30px rgba(124, 58, 237, 0.5); }
+      .brand-mark::before { content: ""; position: absolute; inset: 8px; border-radius: 8px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.28); }
+      .nav-links { display: flex; align-items: center; gap: 28px; color: var(--muted); font-size: 0.96rem; }
+      .nav-links a:hover { color: var(--text); }
+      .nav-actions { display: flex; align-items: center; gap: 14px; }
+      .btn { border: 0; border-radius: 999px; padding: 0.9rem 1.4rem; font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+      .btn:hover { transform: translateY(-1px); }
+      .btn-primary { color: white; background: linear-gradient(135deg, var(--primary), #8b5cf6 55%, var(--secondary)); box-shadow: 0 18px 30px rgba(124, 58, 237, 0.45); }
+      .btn-secondary { background: rgba(148, 163, 184, 0.08); color: var(--text); border: 1px solid var(--line); }
+      .hero { padding: 72px 0 32px; }
+      .hero-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 28px; align-items: center; }
+      .eyebrow { display: inline-flex; align-items: center; gap: 8px; padding: 8px 12px; border-radius: 999px; background: rgba(124, 58, 237, 0.12); border: 1px solid rgba(167, 139, 250, 0.35); color: #ddd6fe; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase; }
+      .eyebrow::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, #a78bfa, #22d3ee); box-shadow: 0 0 18px rgba(124, 58, 237, 0.65); }
+      h1 { font-size: clamp(3rem, 6vw, 5rem); line-height: 0.96; letter-spacing: -0.06em; margin: 18px 0 18px; }
+      .gradient-text { background: linear-gradient(135deg, #f5f3ff 0%, #c4b5fd 20%, #67e8f9 100%); -webkit-background-clip: text; background-clip: text; color: transparent; }
+      .hero-copy p { max-width: 620px; font-size: 1.08rem; line-height: 1.7; color: var(--muted); margin: 0 0 30px; }
+      .cta-row { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 26px; }
+      .mini-meta { display: flex; flex-wrap: wrap; gap: 26px; color: var(--muted); font-size: 0.92rem; }
+      .mini-meta span { display: inline-flex; align-items: center; gap: 8px; }
+      .mini-meta span::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: linear-gradient(135deg, var(--success), #67e8f9); box-shadow: 0 0 18px rgba(52, 211, 153, 0.7); }
+      .visual-panel { position: relative; padding: 18px; }
+      .dashboard { position: relative; background: rgba(10, 17, 28, 0.8); border: 1px solid rgba(148,163,184,0.18); border-radius: 28px; padding: 18px; box-shadow: var(--shadow); }
+      .dashboard::before, .dashboard::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; filter: blur(20px); }
+      .dashboard::before { top: -54px; right: -18px; background: rgba(124, 58, 237, 0.24); }
+      .dashboard::after { left: -20px; bottom: -40px; background: rgba(34, 211, 238, 0.18); }
+      .browser-bar { display: flex; align-items: center; gap: 10px; padding: 10px 14px 16px; }
+      .dot { width: 10px; height: 10px; border-radius: 50%; background: rgba(255,255,255,0.7); }
+      .dot:nth-child(1) { background: #f87171; }
+      .dot:nth-child(2) { background: #fbbf24; }
+      .dot:nth-child(3) { background: #4ade80; }
+      .chart-card { background: linear-gradient(180deg, rgba(17,24,39,0.95), rgba(12,18,31,0.8)); border: 1px solid rgba(148,163,184,0.18); border-radius: 22px; padding: 18px; }
+      .chart-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
+      .chip { border-radius: 999px; padding: 6px 10px; font-size: 0.72rem; font-weight: 600; background: rgba(16,185,129,0.12); color: #86efac; border: 1px solid rgba(16,185,129,0.25); }
+      .metric { font-size: 2rem; font-weight: 700; letter-spacing: -0.05em; }
+      .bars { display: grid; grid-template-columns: repeat(7, 1fr); gap: 12px; align-items: end; height: 150px; margin-top: 22px; }
+      .bar { border-radius: 12px 12px 8px 8px; background: linear-gradient(180deg, #7c3aed 0%, #22d3ee 100%); box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 16px 28px rgba(124,58,237,0.18); }
+      .bar:nth-child(1){ height: 52%; } .bar:nth-child(2){ height: 62%; } .bar:nth-child(3){ height: 58%; } .bar:nth-child(4){ height: 82%; } .bar:nth-child(5){ height: 93%; } .bar:nth-child(6){ height: 79%; } .bar:nth-child(7){ height: 100%; }
+      .floating-badge { position: absolute; right: -18px; bottom: 24px; background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(34,211,238,0.15)); border: 1px solid rgba(134,239,172,0.28); border-radius: 16px; padding: 14px 16px; width: 180px; box-shadow: var(--shadow); }
+      .floating-badge small { display: block; color: var(--muted); margin-bottom: 4px; }
+      .floating-badge strong { display: block; font-size: 1.5rem; letter-spacing: -0.05em; }
+      .section { padding: 46px 0 20px; }
+      .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; margin-top: 24px; }
+      .stat-card { background: rgba(15, 23, 42, 0.62); border: 1px solid rgba(148,163,184,0.12); border-radius: 22px; padding: 24px 22px; }
+      .stat-card .label { color: var(--muted); margin-bottom: 10px; font-size: 0.88rem; }
+      .stat-card .value { font-size: clamp(1.9rem, 2vw, 2.6rem); font-weight: 700; letter-spacing: -0.06em; }
+      .stat-card .delta { margin-top: 10px; font-size: 0.88rem; color: #a7f3d0; }
+      .features { padding-top: 28px; }
+      .section-head { display: flex; justify-content: space-between; align-items: end; gap: 18px; margin-bottom: 22px; }
+      .section-head h2 { margin: 0; font-size: clamp(2rem, 3vw, 3rem); letter-spacing: -0.05em; }
+      .section-head p { margin: 0; color: var(--muted); max-width: 520px; line-height: 1.7; }
+      .feature-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+      .feature-card { background: linear-gradient(180deg, rgba(15,23,42,0.7), rgba(15,23,42,0.5)); border: 1px solid rgba(148,163,184,0.12); border-radius: 24px; padding: 22px; }
+      .feature-icon { width: 52px; height: 52px; border-radius: 16px; background: linear-gradient(135deg, rgba(124,58,237,0.28), rgba(34,211,238,0.18)); border: 1px solid rgba(167,139,250,0.25); display: grid; place-items: center; font-size: 1.4rem; margin-bottom: 18px; }
+      .feature-card h3 { margin: 0 0 10px; font-size: 1.3rem; }
+      .feature-card p { margin: 0; color: var(--muted); line-height: 1.7; }
+      .showcase { display: grid; grid-template-columns: 0.95fr 1.05fr; gap: 22px; margin-top: 34px; align-items: center; }
+      .showcase-panel { background: rgba(15,23,42,0.7); border: 1px solid rgba(148,163,184,0.12); border-radius: 26px; padding: 22px; }
+      .showcase-list { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+      .showcase-list li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-radius: 16px; background: rgba(15, 23, 42, 0.8); border: 1px solid rgba(148,163,184,0.12); }
+      .showcase-left { display: flex; align-items: center; gap: 12px; }
+      .tiny-ava { width: 38px; height: 38px; border-radius: 12px; background: linear-gradient(135deg, #a78bfa, #22d3ee); }
+      .status-pill { padding: 8px 10px; border-radius: 999px; font-size: 0.72rem; font-weight: 700; background: rgba(34, 197, 94, 0.12); color: #86efac; border: 1px solid rgba(34,197,94,0.27); }
+      .preview-card { background: linear-gradient(180deg, rgba(10,17,28,0.94), rgba(15,23,42,0.9)); border-radius: 24px; border: 1px solid rgba(148,163,184,0.14); overflow: hidden; }
+      .preview-header { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 18px 20px; border-bottom: 1px solid rgba(148,163,184,0.12); }
+      .preview-header strong { font-size: 1.02rem; }
+      .preview-body { padding: 18px 20px 24px; }
+      .preview-stack { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 18px; }
+      .panel-box { border-radius: 18px; background: rgba(15,23,42,0.85); border: 1px solid rgba(148,163,184,0.12); padding: 18px; }
+      .mini-graph { height: 120px; margin-top: 18px; display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; align-items: end; }
+      .mini-graph span { display: block; border-radius: 10px 10px 4px 4px; background: linear-gradient(180deg, rgba(167,139,250,0.95) 0%, rgba(34,211,238,0.9) 100%); }
+      .mini-graph span:nth-child(1){ height: 40%; } .mini-graph span:nth-child(2){ height: 55%; } .mini-graph span:nth-child(3){ height: 48%; } .mini-graph span:nth-child(4){ height: 68%; } .mini-graph span:nth-child(5){ height: 75%; } .mini-graph span:nth-child(6){ height: 82%; } .mini-graph span:nth-child(7){ height: 92%; } .mini-graph span:nth-child(8){ height: 100%; }
+      .list-rows { display: grid; gap: 12px; margin-top: 10px; }
+      .list-row { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: 0.9rem; }
+      .list-row strong { color: var(--text); }
+      .cta { padding: 56px 0 80px; }
+      .cta-box { background: linear-gradient(135deg, rgba(124,58,237,0.16), rgba(34,211,238,0.1), rgba(245,158,11,0.08)); border: 1px solid rgba(148,163,184,0.2); border-radius: 30px; padding: clamp(24px, 5vw, 42px); display: flex; align-items: center; justify-content: space-between; gap: 18px; box-shadow: var(--shadow); }
+      .cta-box h3 { font-size: clamp(2rem, 3vw, 3rem); margin: 0 0 8px; letter-spacing: -0.06em; }
+      .cta-box p { margin: 0; color: var(--muted); line-height: 1.7; }
+      .contact-box {
+        align-items: stretch;
+        flex-wrap: wrap;
+      }
+      .contact-copy {
+        flex: 1 1 280px;
+        min-width: 220px;
+      }
+      .contact-form {
+        flex: 1 1 340px;
+        max-width: 520px;
+        display: grid;
+        gap: 16px;
+        background: rgba(9, 15, 26, 0.52);
+        border: 1px solid rgba(148, 163, 184, 0.12);
+        border-radius: 22px;
+        padding: 20px;
+      }
+      .field {
+        display: grid;
+        gap: 8px;
+      }
+      .field span {
+        font-size: 0.82rem;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .field input,
+      .field textarea {
+        width: 100%;
+        border: 1px solid rgba(148, 163, 184, 0.15);
+        border-radius: 14px;
+        background: rgba(15, 23, 42, 0.9);
+        color: var(--text);
+        padding: 0.9rem 1rem;
+        font: inherit;
+      }
+      .field textarea {
+        min-height: 130px;
+        resize: vertical;
+      }
+      .field input:focus,
+      .field textarea:focus {
+        outline: 2px solid rgba(34, 211, 238, 0.5);
+        border-color: rgba(34, 211, 238, 0.6);
+      }
+      .contact-actions {
+        display: flex;
+        justify-content: flex-end;
+      }
+      .contact-notice {
+        position: fixed;
+        right: 24px;
+        bottom: 24px;
+        z-index: 50;
+        max-width: min(420px, calc(100vw - 48px));
+        padding: 16px 20px;
+        border: 1px solid rgba(52, 211, 153, 0.4);
+        border-radius: 16px;
+        background: #0d2b27;
+        color: #a7f3d0;
+        box-shadow: var(--shadow);
+      }
+      .contact-notice.is-error {
+        border-color: rgba(248, 113, 113, 0.45);
+        background: #321b24;
+        color: #fecaca;
+      }
+      .contact-notice[hidden] { display: none; }
+      footer { padding: 0 0 48px; color: var(--muted); }
+      .footer-inner { display: flex; justify-content: space-between; align-items: center; gap: 16px; border-top: 1px solid rgba(148,163,184,0.12); padding-top: 26px; }
+      .footer-links { display: flex; gap: 20px; }
+      @media (max-width: 960px) { .hero-grid, .feature-grid, .showcase, .stats { grid-template-columns: 1fr; } .nav-links { display: none; } .section-head, .cta-box, .footer-inner { flex-direction: column; align-items: flex-start; } }
+      @media (max-width: 560px) { .nav { height: auto; padding: 18px 0; } .nav-actions { gap: 10px; } .btn { padding: 0.8rem 1.1rem; } .cta-row { flex-direction: column; align-items: stretch; } .floating-badge { position: static; margin-top: 18px; width: 100%; } }
+    </style>
+  </head>
+  <body>
+    <header id="top" class="topbar">
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="NerdsTech home" data-i18n-aria="brandHome">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span data-i18n="brand">NerdsTech</span>
+        </a>
+      <!--  <nav class="nav-links" aria-label="Main navigation">
+          <a href="#services" data-i18n="navServices">Services</a>
+          <a href="#pricing" data-i18n="navPricing">Pricing</a>
+          <a href="#contact" data-i18n="navContact">Contact</a>
+           <a href="#resources" data-i18n="navResources">Resources</a> 
+        </nav> -->
+        <div class="nav-actions">
+          <button id="language-toggle" class="btn btn-secondary" type="button" aria-label="Switch language">EL</button>
+         <!-- <a class="btn btn-secondary" href="#" data-i18n="login">Log in</a> -->
+         <!-- <a class="btn btn-primary" href="#" data-i18n="startFree">Start free</a> -->
+        </div>
+      </div>
+    </header>
+    <main>
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow" data-i18n="eyebrow">Welcome to NerdsTech.net</div>
+            <h1>
+              <span data-i18n="heroTitleBefore">IT</span><br />
+             <!-- <span data-i18n="heroTitleInto">into</span> -->
+              <span class="gradient-text" data-i18n="heroTitleHighlight">Services</span>
+            </h1>
+            <p data-i18n="heroParagraph">Remote & On-site IT Solutions</p>
+            <div class="cta-row">
+              <a class="btn btn-primary" href="#contact" data-i18n="bookDemo">Contact Us</a>
+              <!-- <a class="btn btn-secondary" href="#pricing" data-i18n="seePricing">See pricing</a> -->
+            </div>
+            <!-- <div class="mini-meta">
+              <span data-i18n="trial">14-day free trial</span>
+              <span data-i18n="noCard">No credit card required</span>
+            </div> -->
+          </div>
+          <div class="visual-panel" aria-label="Product dashboard preview" data-i18n-aria="dashboardPreview">
+            <div class="dashboard">
+              <div class="browser-bar" aria-hidden="true">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+              </div>
+              <div class="chart-card">
+                <div class="chart-top">
+                  <div><small style="color: var(--muted);" data-i18n="revenueGrowth">Service growth</small></div>
+                  <span class="chip">+15%</span>
+                </div>
+                <!-- <div class="metric">$128.4K</div> -->
+                <div class="bars" aria-hidden="true">
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                  <span class="bar"></span>
+                </div>
+              </div>
+              <div class="floating-badge">
+                <small data-i18n="monthlyImpact">Monthly impact</small>
+                <strong>2.1x</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="section" aria-label="Key metrics" data-i18n-aria="keyMetrics">
+        <div class="container stats">
+          <div class="stat-card"><div class="label" data-i18n="statTeams">Services launched</div><div class="value">7</div><div class="delta" data-i18n="statTeamsDelta">↑ 5%</div></div>
+          <div class="stat-card"><div class="label" data-i18n="statTime">Avg. time of satisfaction</div><div class="value">30m</div><div class="delta" data-i18n="statTimeDelta">Per service</div></div>
+          <div class="stat-card"><div class="label" data-i18n="statNps">NPS score</div><div class="value">52</div><div class="delta" data-i18n="statNpsDelta">20% in SaaS</div></div>
+          <div class="stat-card"><div class="label" data-i18n="statGrowth">Customer growth</div><div class="value">45%</div><div class="delta" data-i18n="statGrowthDelta">Year-over-year</div></div>
+        </div>
+      </section>
+      <section id="services" class="section services">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="featuresHeading">SERVICES</h2>
+            <!--<p data-i18n="featuresSubheading">THE FOLLOWING SERVICES ARE PROVIDED:</p> -->
+          </div> 
+          <div class="feature-grid">
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">🖥️</div><h3 data-i18n="feature1Title">Computer Formatting</h3><p data-i18n="feature1Text">It means deleting all data and reinstalling the operating system from scratch</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">🔒</div><h3 data-i18n="feature2Title">Activation of Office/Windows</h3><p data-i18n="feature2Text">Activation is carried out by purchasing an official, genuine key from authorized sellers and resellers</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">💾</div><h3 data-i18n="feature3Title">Data Backup Creation</h3><p data-i18n="feature3Text">It means creating backups, which protects your files from loss</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">📱</div><h3 data-i18n="feature4Title">Software/Application Installation</h3><p data-i18n="feature4Text">It is carried out by downloading an executable file (.exe) from official websites and following the installation wizard</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">🖥</div><h3 data-i18n="feature5Title">Building a Computer from Scratch</h3><p data-i18n="feature5Text">Building a computer from scratch involves two main stages: selecting and physically assembling the components, and installing the operating system</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">📝</div><h3 data-i18n="feature6Title">System Compatibility Recommendations</h3><p data-i18n="feature6Text">We recommend the appropriate computer system based on the client's usage and budget</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">🛡️</div><h3 data-i18n="feature7Title">Computer Systems Security</h3><p data-i18n="feature7Text">Installing and configuring antivirus software on any operating system</p></article>
+            <article class="feature-card"><div class="feature-icon" aria-hidden="true">🔄</div><h3 data-i18n="feature8Title">New services coming soon</h3><p data-i18n="feature8Text">Stay tuned...</p></article>
+          </div>
+        </div>
+      </section>
+    <!--<section id="pricing" class="section pricing">
+        <div class="container showcase">
+          <div class="section-head">
+            <h2 data-i18n="featuresHeading2">PRICING</h2>
+          </div>
+          <div class="showcase-panel">
+            <ul class="showcase-list">
+              <li>
+                <div class="showcase-left">
+                  <span class="tiny-ava" aria-hidden="true"></span>
+                  <div>
+                    <strong data-i18n="roadmapSync">Roadmap sync</strong>
+                    <div style="color: var(--muted); font-size: 0.84rem; margin-top: 4px;" data-i18n="updatedMinutes">Updated 8 minutes ago</div>
+                  </div>
+                </div>
+                <span class="status-pill" data-i18n="healthy">Healthy</span>
+              </li>
+              <li>
+                <div class="showcase-left">
+                  <span class="tiny-ava" style="background: linear-gradient(135deg, #f59e0b, #fb7185);" aria-hidden="true"></span>
+                  <div>
+                    <strong data-i18n="deliveryPace">Delivery pace</strong>
+                    <div style="color: var(--muted); font-size: 0.84rem; margin-top: 4px;" data-i18n="milestones">4 milestones in flight</div>
+                  </div>
+                </div>
+                <span class="status-pill" data-i18n="onTrack">On track</span>
+              </li>
+              <li>
+                <div class="showcase-left">
+                  <span class="tiny-ava" style="background: linear-gradient(135deg, #34d399, #22d3ee);" aria-hidden="true"></span>
+                  <div>
+                    <strong data-i18n="customerSignals">Customer signals</strong>
+                    <div style="color: var(--muted); font-size: 0.84rem; margin-top: 4px;" data-i18n="opportunities">13 new opportunities</div>
+                  </div>
+                </div>
+                <span class="status-pill" data-i18n="rising">Rising</span>
+              </li>
+            </ul>
+          </div>
+          <div class="preview-card">
+            <div class="preview-header">
+              <strong data-i18n="quarterlyPerformance">Quarterly performance</strong>
+              <span class="chip">+18.4%</span>
+            </div>
+            <div class="preview-body">
+              <div class="preview-stack">
+                <div class="panel-box">
+                  <div style="color: var(--muted); font-size: 0.82rem;" data-i18n="pipelineValue">Pipeline value</div>
+                  <div style="font-size: 2rem; font-weight: 700; letter-spacing: -0.06em; margin-top: 12px;">$2.46M</div>
+                  <div class="mini-graph" aria-hidden="true">
+                    <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+                  </div>
+                </div>
+                <div class="panel-box">
+                  <div style="color: var(--muted); font-size: 0.82rem;" data-i18n="topPriorities">Top priorities</div>
+                  <div class="list-rows">
+                    <div class="list-row"><span data-i18n="retention">Retention</span><strong>86%</strong></div>
+                    <div class="list-row"><span data-i18n="productAdoption">Product adoption</span><strong>62%</strong></div>
+                    <div class="list-row"><span data-i18n="expansionRevenue">Expansion revenue</span><strong>31%</strong></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section> -->
+      <section id="contact" class="section cta">
+        <div class="container">
+          <div class="section-head">
+            <h2 data-i18n="featuresHeading3">CONTACT</h2>
+        </div>
+          <div class="cta-box contact-box">
+            <div class="contact-copy">
+              <h3 data-i18n="ctaHeading">Fill the contact form and we'll get back to you soon with the information about the Services that you are interested in.</h3>
+            </div>
+            <form class="contact-form" action="https://formspree.io/f/xqevnrrp" method="post">
+              <label class="field">
+                <span data-i18n="contactName">Name</span>
+                <input type="text" name="name" placeholder="Your name" data-i18n-placeholder="contactNamePlaceholder" required />
+              </label>
+              <label class="field">
+                <span data-i18n="contactEmail">Email</span>
+                <input type="email" name="email" placeholder="you@example.com" data-i18n-placeholder="contactEmailPlaceholder" required />
+              </label>
+              <label class="field">
+                <span data-i18n="contactMessage">Message</span>
+                <textarea name="message" placeholder="Tell us about the Services you are interested in or any questions you may have" data-i18n-placeholder="contactMessagePlaceholder" required></textarea>
+              </label>
+              <div class="contact-actions">
+                <button class="btn btn-primary" type="submit" data-i18n="contactSend">Send message</button>
+              </div>
+            </form>
+            <div id="contact-notice" class="contact-notice" role="status" aria-live="polite" hidden></div>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="container footer-inner">
+        <div class="brand"><span class="brand-mark" aria-hidden="true"></span><span data-i18n="brand">NerdsTech</span></div>
+        <div class="footer-links">
+          <a data-i18n="copyright">Copyright © 2026 NerdsTech. All rights reserved.</a>
+          <!-- <a href="#" data-i18n="terms">Terms</a>
+          <a href="#" data-i18n="contact">Contact</a> 
+        </div> -->
+      </div>
+    </footer>
+    <script>
+      const translations = {
+        en: {
+          brand: 'NerdsTech',
+          brandHome: 'NerdsTech home',
+          navServices: 'Services',
+          navContact: 'Contact',
+          navPricing: 'Pricing',
+          navResources: 'Resources',
+          login: 'Log in',
+          startFree: 'Start free',
+          eyebrow: 'Welcome to NerdsTech.net',
+          heroTitleBefore: 'IT',
+         <!-- heroTitleInto: 'into', -->
+          heroTitleHighlight: 'Services',
+          heroParagraph: 'Remote & On-site IT Solutions',
+          bookDemo: 'Contact Us',
+          seePricing: 'See pricing',
+          trial: '14-day free trial',
+          noCard: 'No credit card required',
+          monthlyImpact: 'Monthly impact',
+          revenueGrowth: 'Service growth',
+          statTeams: 'Services launched',
+          statTeamsDelta: '↑ 5%',
+          statTime: 'Avg. time of satisfaction',
+          statTimeDelta: 'Per service',
+          statNps: 'NPS score',
+          statNpsDelta: '20% in SaaS',
+          statGrowth: 'Customer growth',
+          statGrowthDelta: 'Year-over-year',
+          featuresHeading: 'SERVICES',
+          featuresHeading2: 'PRICING',
+          featuresHeading3: 'CONTACT',
+          featuresSubheading: 'THE FOLLOWING SERVICES ARE PROVIDED:',
+          feature1Title: 'Computer Formatting',
+          feature1Text: 'It means deleting all data and reinstalling the operating system from scratch',
+          feature2Title: 'Activation of Office/Windows',
+          feature2Text: 'Activation is carried out by purchasing an official, genuine key from authorized sellers and resellers',
+          feature3Title: 'Data Backup Creation',
+          feature3Text: 'It means creating backups, which protects your files from loss',
+          feature4Title: 'Software/Application Installation',
+          feature4Text: 'It is carried out by downloading an executable file (.exe) from official websites and following the installation wizard',
+          feature5Title: 'Building a Computer from Scratch',
+          feature5Text: 'Building a computer from scratch involves two main stages: selecting and physically assembling the components, and installing the operating system',
+          feature6Title: 'System Compatibility Recommendations',
+          feature6Text: 'We recommend the appropriate computer system based on the client\'s usage and budget',
+          feature7Title: 'Computer Systems Security',
+          feature7Text: 'Installing and configuring antivirus software on any operating system',
+          feature8Title: 'New services coming soon',
+          feature8Text: 'Stay tuned...',
+          roadmapSync: 'Roadmap sync',
+          updatedMinutes: 'Updated 8 minutes ago',
+          healthy: 'Healthy',
+          deliveryPace: 'Delivery pace',
+          milestones: '4 milestones in flight',
+          onTrack: 'On track',
+          customerSignals: 'Customer signals',
+          opportunities: '13 new opportunities',
+          rising: 'Rising',
+          quarterlyPerformance: 'Quarterly performance',
+          pipelineValue: 'Pipeline value',
+          topPriorities: 'Top priorities',
+          retention: 'Retention',
+          productAdoption: 'Product adoption',
+          expansionRevenue: 'Expansion revenue',
+          ctaHeading: 'Fill the contact form and we\'ll get back to you soon with the information about the Services that you are interested in or any questions you may have.',
+          contactName: 'Name',
+          contactNamePlaceholder: 'Your name',
+          contactEmail: 'Email',
+          contactEmailPlaceholder: 'you@example.com',
+          contactMessage: 'Message',
+          contactMessagePlaceholder: 'Tell us about the Services you are interested in or any questions you may have',
+          contactSend: 'Send message',
+          contactSuccess: 'Your message was sent successfully!',
+          contactError: 'Your message could not be sent. Please try again.',
+          getStarted: 'Get started',
+          copyright: 'Copyright © 2026 NerdsTech. All rights reserved.',
+          terms: 'Terms',
+          contact: 'Contact',
+          dashboardPreview: 'Product dashboard preview',
+          keyMetrics: 'Key metrics'
+        },
+        el: {
+          brand: 'NerdsTech',
+          brandHome: 'Αρχική σελίδα NerdsTech',
+          navServices: 'Υπηρεσίες',
+          navContact: 'Επικοινωνία',
+          navPricing: 'Τιμολόγηση',
+          navResources: 'Πόροι',
+          login: 'Σύνδεση',
+          startFree: 'Έναρξη δωρεάν',
+          eyebrow: 'Καλώς ήρθατε στo NerdsTech.net',
+          heroTitleBefore: 'Υπηρεσίες',
+          <!-- heroTitleInto: 'σε', -->
+          heroTitleHighlight: 'Πληροφορικής',
+          heroParagraph: 'Εξ Αποστάσεως & Επί Τόπου Λύσεις Πληροφορικής',
+          bookDemo: 'Επικοινωνήστε μαζί μας',
+          seePricing: 'Δείτε τιμές',
+          trial: 'Δωρεάν δοκιμή 14 ημερών',
+          noCard: 'Δεν απαιτείται πιστωτική κάρτα',
+          monthlyImpact: 'Μηνιαία επίδραση',
+          revenueGrowth: 'Ανάπτυξη υπηρεσιών',
+          statTeams: 'Υπηρεσίες που ξεκίνησαν',
+          statTeamsDelta: '↑ 5%',
+          statTime: 'Μέσος χρόνος ικανοποίησης',
+          statTimeDelta: 'Ανά υπηρεσία',
+          statNps: 'Σκορ NPS',
+          statNpsDelta: '20% στο SaaS',
+          statGrowth: 'Ανάπτυξη πελατών',
+          statGrowthDelta: 'Ετήσια αύξηση',
+          featuresHeading: 'ΥΠΗΡΕΣΙΕΣ',
+          featuresHeading2: 'ΤΙΜΟΛΟΓΗΣΗ',
+          featuresHeading3: 'ΕΠΙΚΟΙΝΩΝΙΑ',
+          featuresSubheading: 'ΠΑΡΕΧΟΝΤΑΙ ΟΙ ΑΚΟΛΟΥΘΕΣ ΥΠΗΡΕΣΙΕΣ:' , 
+          feature1Title: 'Format Υπολογιστή',
+          feature1Text: 'Σημαίνει διαγραφή όλων των δεδομένων και επανεγκατάσταση του λειτουργικού συστήματος από την αρχή',
+          feature2Title: 'Ενεργοποίηση Office/Windows',
+          feature2Text: 'Η ενεργοποίηση πραγματοποιείται με την αγορά επίσημου αυθεντικού κλειδιού από επίσημους πωλητές και μεταπωλητές',
+          feature3Title: 'Δημιουργία Αντιγράφου Δεδομένων',
+          feature3Text: 'Σημαίνει δημιουργία αντιγράφων ασφαλείας (backup), η οποία προστατεύει τα αρχεία σας από απώλεια',
+          feature4Title: 'Εγκατάσταση Λογισμικού/Εφαρμογών',
+          feature4Text: 'Πραγματοποιείται με τη λήψη ενός εκτελέσιμου αρχείου (.exe) από επίσημες ιστοσελίδες και και ακολουθώντας τον οδηγό εγκατάστασης',
+          feature5Title: 'Στήσιμο Υπολογιστή από το 0',
+          feature5Text: 'Το στήσιμο ενός υπολογιστή από το μηδέν περιλαμβάνει δύο βασικά στάδια: την επιλογή και φυσική συναρμολόγηση των εξαρτημάτων, και την εγκατάσταση του λειτουργικού συστήματος',
+          feature6Title: 'Προτάσεις Συμβατότητας Συστημάτων',
+          feature6Text: 'Προτείνουμε με βάση την χρήση και το budget του πελάτη το κατάλληλο σύστημα υπολογιστή',
+          feature7Title: 'Ασφάλεια Υπολογιστικών Συστημάτων',
+          feature7Text: 'Πραγματοποιείται εγκατάσταση και ρύθμιση αντιικού λογισμικού (Antivirus) στο εκάστοτε λειτουργικό σύστημα',
+          feature8Title: 'Έρχονται σύντομα νέες υπηρεσίες',
+          feature8Text: 'Μείνετε συντονισμένοι...',
+          updatedMinutes: 'Ενημερώθηκε πριν από 8 λεπτά',
+          healthy: 'Υγιές',
+          deliveryPace: 'Ρυθμός παράδοσης',
+          milestones: '4 ορόσημα σε εξέλιξη',
+          onTrack: 'Σε πορεία',
+          customerSignals: 'Σήματα πελατών',
+          opportunities: '13 νέες ευκαιρίες',
+          rising: 'Αυξάνεται',
+          quarterlyPerformance: 'Τριμηνιαία απόδοση',
+          pipelineValue: 'Αξία pipeline',
+          topPriorities: 'Κορυφαίες προτεραιότητες',
+          retention: 'Διατήρηση',
+          productAdoption: 'Υιοθέτηση προϊόντος',
+          expansionRevenue: 'Έσοδα επέκτασης',
+          ctaHeading: 'Συμπληρώστε τη φόρμα επικοινωνίας και θα επικοινωνήσουμε μαζί σας σύντομα με πληροφορίες για τις Υπηρεσίες που σας ενδιαφέρουν ή γενικά για οποιαδήποτε απορία/ερώτηση.',
+          contactName: 'Όνομα',
+          contactNamePlaceholder: 'Το όνομά σας',
+          contactEmail: 'Διεύθυνση email',
+          contactEmailPlaceholder: 'Το email σας',
+          contactMessage: 'Μήνυμα',
+          contactMessagePlaceholder: 'Πείτε μας για τις Υπηρεσίες που σας ενδιαφέρουν ή γενικά για οποιαδήποτε απορία/ερώτηση έχετε',
+          contactSend: 'Αποστολή μηνύματος',
+          contactSuccess: 'Το μήνυμά σας στάλθηκε με επιτυχία!',
+          contactError: 'Δεν ήταν δυνατή η αποστολή του μηνύματος. Δοκιμάστε ξανά.',
+          getStarted: 'Έναρξη',
+          copyright: 'Πνευματικά δικαιώματα © 2026 NerdsTech. Όλα τα δικαιώματα διατηρούνται.',
+          terms: 'Όροι',
+          contact: 'Επικοινωνία',
+          dashboardPreview: 'Προεπισκόπηση πίνακα ελέγχου',
+          keyMetrics: 'Βασικά μεγέθη'
+        }
+      };
+
+      const languageToggle = document.getElementById('language-toggle');
+      const brandLink = document.querySelector('.brand[href="#top"]');
+      let currentLanguage = 'en';
+
+      brandLink.addEventListener('click', (event) => {
+        event.preventDefault();
+        window.location.reload();
+      });
+
+      function applyTranslations(lang) {
+        const dict = translations[lang];
+        if (!dict) return;
+
+        document.querySelectorAll('[data-i18n]').forEach((element) => {
+          const key = element.dataset.i18n;
+          if (dict[key]) {
+            element.textContent = dict[key];
+          }
+        });
+
+        document.querySelectorAll('[data-i18n-aria]').forEach((element) => {
+          const key = element.dataset.i18nAria;
+          if (dict[key]) {
+            element.setAttribute('aria-label', dict[key]);
+          }
+        });
+
+        document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+          const key = element.dataset.i18nPlaceholder;
+          if (dict[key]) {
+            element.setAttribute('placeholder', dict[key]);
+          }
+        });
+
+        document.documentElement.lang = lang === 'el' ? 'el' : 'en';
+        languageToggle.textContent = lang === 'en' ? 'EL' : 'EN';
+        languageToggle.setAttribute('aria-label', lang === 'en' ? 'Switch to Greek' : 'Switch to English');
+        currentLanguage = lang;
+      }
+
+      languageToggle.addEventListener('click', () => {
+        applyTranslations(currentLanguage === 'en' ? 'el' : 'en');
+      });
+
+      const contactForm = document.querySelector('.contact-form');
+      const contactNotice = document.getElementById('contact-notice');
+      const contactSubmit = contactForm.querySelector('button[type="submit"]');
+      let contactNoticeTimeout;
+
+      contactForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        contactSubmit.disabled = true;
+        contactNotice.hidden = true;
+
+        try {
+          const response = await fetch(contactForm.action, {
+            method: 'POST',
+            body: new FormData(contactForm),
+            headers: { Accept: 'application/json' }
+          });
+
+          if (!response.ok) {
+            throw new Error('Formspree returned an unsuccessful response.');
+          }
+
+          contactForm.reset();
+          contactNotice.dataset.i18n = 'contactSuccess';
+          contactNotice.textContent = translations[currentLanguage].contactSuccess;
+          contactNotice.classList.remove('is-error');
+          contactNotice.hidden = false;
+          window.clearTimeout(contactNoticeTimeout);
+          contactNoticeTimeout = window.setTimeout(() => {
+            contactNotice.hidden = true;
+          }, 5000);
+        } catch (error) {
+          contactNotice.dataset.i18n = 'contactError';
+          contactNotice.textContent = translations[currentLanguage].contactError;
+          contactNotice.classList.add('is-error');
+          contactNotice.hidden = false;
+          console.error('Contact form submission failed:', error);
+        } finally {
+          contactSubmit.disabled = false;
+        }
+      });
+
+      applyTranslations(currentLanguage);
+    </script>
+  </body>
+</html>
